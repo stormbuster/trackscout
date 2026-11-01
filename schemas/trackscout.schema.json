@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/stormbuster/trackscout/schemas/trackscout.schema.json",
+  "title": "TrackScout project settings",
+  "description": "Optional, served at GET /data/trackscout.json (the reference server reads data/trackscout.json from its data folder). Every field is optional and the file itself is optional: a 404 means the app keeps its own defaults. Place it next to the questions you serve to brand the app for your track and tune its behaviour per project.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The project name shown in the app (onboarding, headers).",
+      "examples": ["My Street"]
+    },
+    "alert_radius_meters": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Default radius around a place at which the app alerts the owner of open questions. The owner can still change it in Settings; walking pace suits ~40 m, cycling 60-80 m.",
+      "examples": [40]
+    },
+    "night_window": {
+      "type": "object",
+      "properties": {
+        "start_offset_minutes": {
+          "type": "number",
+          "description": "Minutes after sunset until the night-photo window opens (default 30)."
+        },
+        "end_hour": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 24,
+          "description": "Fractional local hour at which the night-photo window closes; 23.5 means 23:30 (default 23.5)."
+        }
+      },
+      "additionalProperties": false,
+      "description": "When the app considers it 'night' for photo planning (night-lighting questions and the 3-per-day night-photo cap). Omit to keep the app defaults."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "name": "My Street",
+      "alert_radius_meters": 40,
+      "night_window": { "start_offset_minutes": 30, "end_hour": 23.5 }
+    }
+  ]
+}

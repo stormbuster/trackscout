@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/stormbuster/trackscout/schemas/photos.schema.json",
+  "title": "TrackScout photos document",
+  "description": "Served at GET /data/owner_photos.json: one record per stored photo, keyed by photo_id. The server returns 404 while there are no photos. Each JPEG is stored on the server under `stored` (a data-folder-relative path like photos/<capture-date>/<photo_id>.jpg) and fetchable at GET /photo/<url-encoded stored>. The photo's capture position is in the upload meta, not in this list document.",
+  "type": "object",
+  "additionalProperties": { "$ref": "#/definitions/photo" },
+  "examples": [
+    {
+      "6f2e9c1a-4b7d-4c3e-9a2f-8d1c5b0e3a71": {
+        "photo_id": "6f2e9c1a-4b7d-4c3e-9a2f-8d1c5b0e3a71",
+        "question_id": "champ1a",
+        "place_key": "48.87067,2.2952",
+        "kind": "facade",
+        "light": "night",
+        "taken": "2026-10-30T21:14:05+01:00",
+        "stored": "photos/2026-10-30/6f2e9c1a-4b7d-4c3e-9a2f-8d1c5b0e3a71.jpg"
+      }
+    }
+  ],
+  "definitions": {
+    "photo": {
+      "type": "object",
+      "required": ["photo_id", "kind", "light"],
+      "properties": {
+        "photo_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Client-generated UUID; the idempotency key. Re-uploading the same id stores nothing new."
+        },
+        "question_id": {
+          "type": ["string", "null"],
+          "description": "The question the photo was taken for; `null` for capture-mode photos (owner took a photo without a question). Null here means the project's agents should attach or discard it by judgement, never invent a question for it."
+        },
+        "place_key": {
+          "type": ["string", "null"],
+          "description": "The place as a `lat,lon` string, or `null` for a capture that had no place."
+        },
+        "kind": {
+          "enum": ["storefront", "sign", "facade", "detail", "night_lighting", "other"],
+          "description": "What the photo shows (the app's capture-mode selector). `storefront`/`facade` shots taken straight-on are the ones agents use to measure bays."
+        },
+        "light": {
+          "enum": ["day", "dusk", "night"],
+          "description": "The light condition, auto-classified from the sun position at `taken` (the owner can override it)."
+        },
+        "taken": {
+          "type": ["string", "null"],
+          "description": "Capture time, ISO 8601 with the local UTC offset (e.g. 2026-10-30T21:14:05+01:00). For imports this is the photo's EXIF time."
+        },
+        "stored": {
+          "type": ["string", "null"],
+          "description": "Where the JPEG lives on the server, relative to its data folder; fetch it at GET /photo/<url-encoded stored>."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

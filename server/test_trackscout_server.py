@@ -68,7 +68,7 @@ def questions_doc() -> dict:
                 "building": "Test Building One", "lat": 1.0, "lon": 2.0,
                 "context": "ctx one", "question": "Q1?", "type": "yesno",
                 "options": [],
-                "images": [{"src": "images/q1.png", "alt": "a"}],
+                "images": [{"src": "images/q1.png", "caption": "a"}],
             },
             {
                 "id": "q2", "page": 1, "order": 2, "group": "main",
@@ -76,8 +76,8 @@ def questions_doc() -> dict:
                 "context": "ctx two", "question": "Q2?", "type": "text",
                 "options": [],
                 "images": [
-                    {"src": "https://example.com/external.png", "alt": "b"},
-                    {"src": "../outside.txt", "alt": "c"},
+                    {"src": "https://example.com/external.png", "caption": "b"},
+                    {"src": "../outside.txt", "caption": "c"},
                 ],
             },
             {

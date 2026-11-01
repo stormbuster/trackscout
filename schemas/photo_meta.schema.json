@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/stormbuster/trackscout/schemas/photo_meta.schema.json",
+  "title": "TrackScout photo upload meta",
+  "description": "The `meta` part of POST /api/photo (multipart/form-data: a `meta` part with this JSON and a `photo` part with the JPEG). The reference server accepts the app's exact shape: question_id and place_key are always present, but `null` for capture-mode photos, which have no question. The position fields are the PRD's one 'send location' exception - they belong to the photo, and the reference server stores them only on its own machine.",
+  "type": "object",
+  "required": ["photo_id", "question_id", "place_key", "building", "kind", "light", "taken", "source"],
+  "properties": {
+    "photo_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Client-generated UUID, the idempotency key: re-uploading a known id is a no-op that reports duplicate=true."
+    },
+    "question_id": {
+      "type": ["string", "null"],
+      "description": "The question this photo was taken for; `null` in capture mode (owner photographs freely, the project's agents may attach it later)."
+    },
+    "place_key": {
+      "type": ["string", "null"],
+      "description": "The place as a `lat,lon` string; `null` when the photo has no place (capture at an unmodelled building)."
+    },
+    "building": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Free-text place name, prefilled from the place the photo was taken for."
+    },
+    "kind": {
+      "enum": ["storefront", "sign", "facade", "detail", "night_lighting", "other"],
+      "description": "What the photo shows - the app's capture-mode selector."
+    },
+    "light": {
+      "enum": ["day", "dusk", "night"],
+      "description": "Light condition, auto-classified from the sun position at capture time; the owner can override it in the UI."
+    },
+    "taken": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Capture time, ISO 8601 with the local UTC offset, seconds precision, e.g. 2026-10-30T21:14:05+01:00 (a photo's EXIF time for imports). The server groups stored files by this date."
+    },
+    "lat": {
+      "type": ["number", "null"],
+      "minimum": -90,
+      "maximum": 90,
+      "description": "Optional device position at capture (WGS-84); absent for imports without a location."
+    },
+    "lon": {
+      "type": ["number", "null"],
+      "minimum": -180,
+      "maximum": 180,
+      "description": "Optional, paired with lat."
+    },
+    "acc_m": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Optional horizontal accuracy of the position, meters."
+    },
+    "heading_deg": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 360,
+      "description": "Optional compass heading the camera faced (0 = north, clockwise). Agents use it to tell whether a facade shot is straight-on."
+    },
+    "pitch_deg": {
+      "type": ["number", "null"],
+      "description": "Optional camera tilt: positive up, negative down. Together with heading_deg it tells the agents how usable the shot is."
+    },
+    "source": {
+      "enum": ["camera", "import"],
+      "description": "`camera` = taken in-app; `import` = added from the owner's photo library."
+    },
+    "note": {
+      "type": ["string", "null"],
+      "description": "Optional owner note, free text."
+    },
+    "set_id": {
+      "type": ["string", "null"],
+      "description": "Optional: the guided photo set this shot belongs to (photo capture PRD 5.3), e.g. a storefront set."
+    },
+    "set_step": {
+      "type": ["string", "null"],
+      "description": "Optional: the step within the set, e.g. the straight-on shot used to measure bay widths."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "photo_id": "6f2e9c1a-4b7d-4c3e-9a2f-8d1c5b0e3a71",
+      "question_id": "champ1a",
+      "place_key": "48.87067,2.2952",
+      "building": "Palais des Aigles",
+      "kind": "facade",
+      "light": "night",
+      "taken": "2026-10-30T21:14:05+01:00",
+      "lat": 48.87082,
+      "lon": 2.29518,
+      "acc_m": 8,
+      "heading_deg": 183,
+      "pitch_deg": 3,
+      "source": "camera"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/stormbuster/trackscout/schemas/answers.schema.json",
+  "title": "TrackScout answers document",
+  "description": "Served at GET /data/owner_answers.json: the latest answer per question, keyed by question id. The server returns 404 while there are no answers at all, so an empty object is valid here. POSTed through POST /api/answer; re-POSTing a known id replaces the stored answer (the server also keeps an append-only answers.jsonl history).",
+  "type": "object",
+  "additionalProperties": { "$ref": "#/definitions/answer" },
+  "examples": [
+    {
+      "champ1a": {
+        "id": "champ1a",
+        "answer": "Three arches and a central balcony",
+        "comment": "",
+        "time": "2026-11-01 10:24"
+      }
+    }
+  ],
+  "definitions": {
+    "answer": {
+      "type": "object",
+      "required": ["id", "answer"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The question id being answered; should match the object key."
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The owner's answer. For yesno/choice it is the label of the chosen option; every type also accepts the protocol values `Don't know` (owner unsure - the decision stays open) and `WRONG LOCATION` (the pavement point is wrong; the correction is carried in `comment`)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "Optional free text. For `WRONG LOCATION` the app puts the corrected `lat, lon` in here."
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$",
+          "description": "Server stamp of the latest POST, local time, `YYYY-MM-DD HH:MM`."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
