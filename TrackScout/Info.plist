@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>TrackScout photographs storefronts, signs, and facades for your track; the photos are uploaded to your own review server.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>TrackScout can import photos you already took — for example a Night mode shot from the Camera app.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>TrackScout can save captured photos to your photo library when “Also save to Photos” is on in Settings.</string>
+</dict>
+</plist>

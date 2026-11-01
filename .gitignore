@@ -25,6 +25,8 @@ Mock/
 QUESTIONS_APP_PRD.md
 PHOTO_CAPTURE_PRD.md
 CLAUDE.md
+.cursor/
+.github/
 
 # Local environment and secrets
 .env
