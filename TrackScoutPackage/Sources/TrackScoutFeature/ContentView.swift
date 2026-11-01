@@ -23,11 +23,6 @@ public struct ContentView: View {
                     destination(for: route)
                 }
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                syncStatusHeader
-            }
-        }
         .environment(appState)
     }
 
@@ -45,44 +40,6 @@ public struct ContentView: View {
         }
     }
 
-    /// Small "last sync / pending answers" status in the nav bar.
-    private var syncStatusHeader: some View {
-        HStack(spacing: 6) {
-            if appState.settings.demoMode {
-                Text("demo data")
-                    .font(.caption2.bold())
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Color(.tertiarySystemFill), in: Capsule())
-                    .foregroundStyle(.secondary)
-            }
-            if appState.isSyncing {
-                ProgressView()
-            } else if let last = appState.syncStatus.lastSync {
-                Image(systemName: "checkmark.icloud")
-                    .foregroundStyle(.secondary)
-                Text(last, format: .relative(presentation: .named))
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            } else if let error = appState.syncStatus.lastError {
-                Image(systemName: "exclamationmark.icloud")
-                    .foregroundStyle(.orange)
-                Text(error)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            if appState.syncStatus.outboxCount > 0 {
-                Text("\(appState.syncStatus.outboxCount)")
-                    .font(.caption2.bold())
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(.tint, in: Capsule())
-                    .foregroundStyle(.white)
-            }
-        }
-        .accessibilityElement(children: .combine)
-    }
 }
 
 #Preview {
