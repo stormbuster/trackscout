@@ -320,7 +320,10 @@ public final class AppState {
     /// an existing set is a plain refresh.
     public func loadDemoData() async {
         guard let doc = DemoData.questionsDoc() else { return }
-        try? syncEngine.applyQuestions(doc)
+        if let groups = doc.groups {
+            groupOrder = groups
+        }
+        try? syncEngine.applyQuestions(doc, groupOrder: doc.groups)
         await refreshDerived()
     }
 
