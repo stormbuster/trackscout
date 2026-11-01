@@ -1,0 +1,36 @@
+# Xcode user data and build products
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager (local checkouts)
+.build/
+
+# macOS
+.DS_Store
+
+# Local development scratch: the dev mock server and its state.
+# The shared, committed reference server lives in server/.
+Mock/
+
+# Personal reference documents and agent rules, kept out of the public repo.
+# The public equivalents of these notes are README.md and AGENTS.md.
+QUESTIONS_APP_PRD.md
+PHOTO_CAPTURE_PRD.md
+CLAUDE.md
+
+# Local environment and secrets
+.env
+.env.*
+
+# Signing material: never commit personal provisioning or keys
+*.mobileprovision
+*.p12
+*.pfx
